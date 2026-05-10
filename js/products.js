@@ -7,7 +7,7 @@ const products = [
   name: "Blue Striped Oxford Shirt",
   price: 4500,
   category: "Formal",
-  image: "yahan-image-ka-link-daalo.jpg",
+  image: "https://kommodo.ai/i/7cUvsWcTOejoDu1lYGoE",
   description: "High-quality formal blue striped shirt."
 }
                  ];

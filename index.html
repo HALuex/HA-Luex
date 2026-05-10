@@ -197,13 +197,13 @@
 <script src="js/cart.js"></script>
 <script>
   // Load featured products (first 3)
-// document.addEventListener('DOMContentLoaded', () => {
+ document.addEventListener('DOMContentLoaded', () => {
     const grid = document.getElementById('featuredProducts');
     const featured = products.slice(0, 3);
     featured.forEach(p => {
       grid.innerHTML += createProductCard(p);
     });
-  });//
+  });
 
   function toggleMenu() {
     document.getElementById('mobileMenu').classList.toggle('open');

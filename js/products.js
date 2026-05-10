@@ -1,7 +1,16 @@
 // HA Luex — Products Database
 // Admin is iss file mein products add/edit kar sakta hai
 
-const products = [];
+const products = [
+  {
+  id: 1,
+  name: "Blue Striped Oxford Shirt",
+  price: 4500,
+  category: "Formal",
+  image: "yahan-image-ka-link-daalo.jpg",
+  description: "High-quality formal blue striped shirt."
+}
+                 ];
 
 // Product card HTML generator
 function createProductCard(product) {

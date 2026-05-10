@@ -97,11 +97,15 @@ function createProductCard(product) {
     ? `<div class="product-badge">${product.badge}</div>` 
     : '';
   
+  const imgHTML = product.image
+    ? `<img src="${product.image}" alt="${product.name}" style="width:100%;height:100%;object-fit:cover;display:block;" />`
+    : `<div class="product-img-placeholder">${product.emoji}</div>`;
+
   return `
     <div class="product-card" onclick="openProduct(${product.id})">
       <div class="product-img-wrap">
         ${badgeHTML}
-        <div class="product-img-placeholder">${product.emoji}</div>
+        ${imgHTML}
       </div>
       <div class="product-body">
         <p class="product-category">${product.category}</p>

@@ -287,6 +287,51 @@
       text-decoration: none;
     }
 
+    /* IMAGE UPLOAD */
+    .img-upload-area {
+      border: 2px dashed rgba(201,168,76,0.35);
+      background: var(--offwhite);
+      padding: 28px 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s;
+      position: relative;
+    }
+    .img-upload-area:hover, .img-upload-area.dragover {
+      border-color: var(--gold);
+      background: rgba(201,168,76,0.07);
+    }
+    .img-upload-area input[type="file"] {
+      position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%;
+    }
+    .img-upload-icon { font-size: 32px; margin-bottom: 8px; }
+    .img-upload-text { font-size: 12px; color: var(--gray); letter-spacing: 1px; }
+    .img-upload-text strong { color: var(--gold); }
+    .img-preview-wrap {
+      margin-top: 12px;
+      display: none;
+      align-items: center;
+      gap: 14px;
+    }
+    .img-preview-wrap img {
+      width: 80px; height: 80px;
+      object-fit: cover;
+      border: 2px solid rgba(201,168,76,0.3);
+    }
+    .img-preview-name { font-size: 12px; color: var(--gray); }
+    .img-remove-btn {
+      font-size: 11px; color: var(--red);
+      background: none; border: none; cursor: pointer;
+      font-family: 'Montserrat', sans-serif;
+      letter-spacing: 1px; margin-top: 4px; display: block;
+    }
+    /* product table image thumb */
+    .prod-thumb {
+      width: 42px; height: 42px; object-fit: cover;
+      border: 1px solid rgba(0,0,0,0.1);
+      border-radius: 2px;
+    }
+
     @media (max-width: 768px) {
       .sidebar { display: none; }
       .main { margin-left: 0; padding: 20px; }
@@ -449,6 +494,27 @@
           <div class="form-group">
             <label>Fabric</label>
             <input type="text" id="pFabric" placeholder="e.g. 100% Egyptian Cotton" />
+          </div>
+          <div class="form-group">
+            <label>Product Image</label>
+            <div class="img-upload-area" id="uploadArea"
+                 ondragover="handleDragOver(event)"
+                 ondragleave="handleDragLeave(event)"
+                 ondrop="handleDrop(event)">
+              <input type="file" id="pImage" accept="image/*" onchange="handleImageSelect(event)" />
+              <div class="img-upload-icon">🖼️</div>
+              <div class="img-upload-text">
+                <strong>Click to upload</strong> ya image yahan drag & drop karein<br/>
+                <span style="font-size:11px;">JPG, PNG, WEBP — max 2MB</span>
+              </div>
+            </div>
+            <div class="img-preview-wrap" id="imgPreviewWrap">
+              <img id="imgPreviewImg" src="" alt="preview" />
+              <div>
+                <div class="img-preview-name" id="imgPreviewName"></div>
+                <button class="img-remove-btn" onclick="removeImage()">✕ Remove Image</button>
+              </div>
+            </div>
           </div>
           <div class="form-group">
             <label>Description *</label>
@@ -642,28 +708,112 @@
   ];
 
   function getProducts() {
+    const hidden = getHiddenBuiltins();
     const extra = JSON.parse(localStorage.getItem('haluex_extra_products') || '[]');
-    return [...builtinProducts, ...extra];
+    return [...builtinProducts.filter(p => !hidden.includes(p.id)), ...extra];
+  }
+
+  function getHiddenBuiltins() {
+    return JSON.parse(localStorage.getItem('haluex_hidden_builtins') || '[]');
   }
 
   function renderProductsTable() {
-    const prods = getProducts();
+    const hidden = getHiddenBuiltins();
+    const extra = JSON.parse(localStorage.getItem('haluex_extra_products') || '[]');
+    const visibleBuiltins = builtinProducts.filter(p => !hidden.includes(p.id));
+    const prods = [...visibleBuiltins, ...extra];
+
     const wrap = document.getElementById('productsTableWrap');
     document.getElementById('statProducts').textContent = prods.length;
 
-    const rows = prods.map(p => `<tr>
-      <td style="font-size:24px;">${p.emoji}</td>
-      <td><strong>${p.name}</strong><br/><span style="font-size:11px;color:#888;">${p.fabric || ''}</span></td>
-      <td>${p.category}</td>
-      <td>PKR ${p.price.toLocaleString()}${p.oldPrice ? ` <span style="text-decoration:line-through;color:#aaa;font-size:11px;">PKR ${p.oldPrice.toLocaleString()}</span>` : ''}</td>
-      <td>${p.badge ? `<span class="status-badge status-new">${p.badge}</span>` : '—'}</td>
-      <td><span style="color:var(--green); font-size:12px;">● In Stock</span></td>
-    </tr>`).join('');
+    if (prods.length === 0) {
+      wrap.innerHTML = '<div class="empty-state"><p>Koi product nahi hai. "Add Product" se naya product add karein.</p></div>';
+      return;
+    }
+
+    const rows = prods.map(p => {
+      const imgCell = p.image
+        ? `<img class="prod-thumb" src="${p.image}" alt="${p.name}" />`
+        : `<span style="font-size:24px;">${p.emoji}</span>`;
+      const isBuiltin = builtinProducts.some(b => b.id === p.id);
+      return `<tr>
+        <td>${imgCell}</td>
+        <td><strong>${p.name}</strong><br/><span style="font-size:11px;color:#888;">${p.fabric || ''}</span></td>
+        <td>${p.category}</td>
+        <td>PKR ${p.price.toLocaleString()}${p.oldPrice ? ` <span style="text-decoration:line-through;color:#aaa;font-size:11px;">PKR ${p.oldPrice.toLocaleString()}</span>` : ''}</td>
+        <td>${p.badge ? `<span class="status-badge status-new">${p.badge}</span>` : '—'}</td>
+        <td><span style="color:var(--green); font-size:12px;">&#9679; In Stock</span></td>
+        <td><button class="action-btn danger" onclick="deleteProduct(${p.id}, ${isBuiltin})">&#128465; Delete</button></td>
+      </tr>`;
+    }).join('');
 
     wrap.innerHTML = `<table>
-      <thead><tr><th></th><th>Product</th><th>Category</th><th>Price</th><th>Badge</th><th>Stock</th></tr></thead>
+      <thead><tr><th></th><th>Product</th><th>Category</th><th>Price</th><th>Badge</th><th>Stock</th><th>Action</th></tr></thead>
       <tbody>${rows}</tbody>
     </table>`;
+  }
+
+  function deleteProduct(id, isBuiltin) {
+    if (!confirm('Kya aap yaqeenan is product ko delete karna chahte hain?')) return;
+    if (isBuiltin) {
+      const hidden = getHiddenBuiltins();
+      if (!hidden.includes(id)) hidden.push(id);
+      localStorage.setItem('haluex_hidden_builtins', JSON.stringify(hidden));
+    } else {
+      const extra = JSON.parse(localStorage.getItem('haluex_extra_products') || '[]');
+      localStorage.setItem('haluex_extra_products', JSON.stringify(extra.filter(p => p.id !== id)));
+    }
+    renderProductsTable();
+    updateStats();
+  }
+
+  // ---- IMAGE UPLOAD HELPERS ----
+  let selectedImageBase64 = null;
+
+  function handleImageSelect(e) {
+    const file = e.target.files[0];
+    if (file) processImageFile(file);
+  }
+
+  function handleDragOver(e) {
+    e.preventDefault();
+    document.getElementById('uploadArea').classList.add('dragover');
+  }
+
+  function handleDragLeave(e) {
+    document.getElementById('uploadArea').classList.remove('dragover');
+  }
+
+  function handleDrop(e) {
+    e.preventDefault();
+    document.getElementById('uploadArea').classList.remove('dragover');
+    const file = e.dataTransfer.files[0];
+    if (file && file.type.startsWith('image/')) processImageFile(file);
+  }
+
+  function processImageFile(file) {
+    if (file.size > 2 * 1024 * 1024) {
+      alert('Image size 2MB se zyada hai. Chhoti image use karein.');
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = function(ev) {
+      selectedImageBase64 = ev.target.result;
+      document.getElementById('imgPreviewImg').src = selectedImageBase64;
+      document.getElementById('imgPreviewName').textContent = file.name;
+      document.getElementById('imgPreviewWrap').style.display = 'flex';
+      document.getElementById('uploadArea').style.borderColor = 'var(--gold)';
+    };
+    reader.readAsDataURL(file);
+  }
+
+  function removeImage() {
+    selectedImageBase64 = null;
+    document.getElementById('pImage').value = '';
+    document.getElementById('imgPreviewImg').src = '';
+    document.getElementById('imgPreviewName').textContent = '';
+    document.getElementById('imgPreviewWrap').style.display = 'none';
+    document.getElementById('uploadArea').style.borderColor = '';
   }
 
   function saveProduct() {
@@ -683,6 +833,7 @@
       badge: document.getElementById('pBadge').value.trim() || null,
       fabric: document.getElementById('pFabric').value.trim(),
       description: document.getElementById('pDesc').value.trim(),
+      image: selectedImageBase64 || null,
       sizes: ['S','M','L','XL','XXL'],
       stock: true
     });
@@ -693,6 +844,8 @@
     document.getElementById('pOldPrice').value = '';
     document.getElementById('pBadge').value = '';
     document.getElementById('pDesc').value = '';
+    document.getElementById('pFabric').value = '';
+    removeImage();
 
     const msg = document.getElementById('saveMsg');
     msg.textContent = '✓ Product saved!';

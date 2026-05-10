@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Panel — HA Luex</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --black: #0a0a0a;
+      --gold: #C9A84C;
+      --gold-light: #e0c068;
+      --offwhite: #F5F0E8;
+      --charcoal: #2C2C2C;
+      --gray: #888888;
+      --white: #ffffff;
+      --sidebar: #111111;
+      --sidebar-w: 240px;
+      --green: #22c55e;
+      --red: #ef4444;
+      --amber: #f59e0b;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Montserrat', sans-serif; background: #f0ece4; color: var(--charcoal); }
+
+    /* LOGIN */
+    .login-screen {
+      min-height: 100vh;
+      background: var(--black);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .login-box {
+      background: #1a1a1a;
+      border: 1px solid rgba(201,168,76,0.2);
+      padding: 48px 40px;
+      width: 380px;
+      text-align: center;
+    }
+    .login-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 32px;
+      color: var(--offwhite);
+      letter-spacing: 4px;
+      margin-bottom: 4px;
+    }
+    .login-logo span { color: var(--gold); }
+    .login-sub { font-size: 10px; letter-spacing: 3px; color: var(--gray); text-transform: uppercase; margin-bottom: 36px; }
+    .login-box input {
+      width: 100%;
+      padding: 14px 16px;
+      background: #111;
+      border: 1px solid rgba(201,168,76,0.2);
+      color: var(--offwhite);
+      font-family: 'Montserrat', sans-serif;
+      font-size: 13px;
+      margin-bottom: 12px;
+      outline: none;
+    }
+    .login-box input:focus { border-color: var(--gold); }
+    .login-btn {
+      width: 100%;
+      padding: 14px;
+      background: var(--gold);
+      color: var(--black);
+      border: none;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background 0.2s;
+      margin-top: 8px;
+    }
+    .login-btn:hover { background: var(--gold-light); }
+    .login-err { font-size: 12px; color: var(--red); margin-top: 12px; display: none; }
+
+    /* DASHBOARD */
+    .dashboard { display: none; min-height: 100vh; }
+
+    /* SIDEBAR */
+    .sidebar {
+      position: fixed;
+      top: 0; left: 0;
+      width: var(--sidebar-w);
+      height: 100vh;
+      background: var(--sidebar);
+      display: flex;
+      flex-direction: column;
+      z-index: 10;
+    }
+    .sidebar-logo {
+      padding: 28px 24px;
+      border-bottom: 1px solid rgba(201,168,76,0.1);
+    }
+    .sidebar-logo h1 { font-family: 'Cormorant Garamond', serif; font-size: 22px; color: var(--offwhite); letter-spacing: 3px; }
+    .sidebar-logo h1 span { color: var(--gold); }
+    .sidebar-logo p { font-size: 9px; letter-spacing: 2px; color: var(--gray); text-transform: uppercase; margin-top: 2px; }
+
+    .sidebar-nav { flex: 1; padding: 24px 0; }
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 24px;
+      font-size: 12px;
+      letter-spacing: 1.5px;
+      color: var(--gray);
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.2s;
+      border-left: 3px solid transparent;
+    }
+    .nav-item:hover { color: var(--offwhite); background: rgba(255,255,255,0.03); }
+    .nav-item.active { color: var(--gold); border-left-color: var(--gold); background: rgba(201,168,76,0.05); }
+    .nav-item .icon { font-size: 16px; }
+
+    .sidebar-footer {
+      padding: 20px 24px;
+      border-top: 1px solid rgba(201,168,76,0.1);
+    }
+    .logout-btn {
+      width: 100%;
+      padding: 10px;
+      background: transparent;
+      border: 1px solid rgba(201,168,76,0.2);
+      color: var(--gray);
+      font-size: 11px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: 'Montserrat', sans-serif;
+    }
+    .logout-btn:hover { background: rgba(201,168,76,0.08); color: var(--gold); }
+
+    /* MAIN CONTENT */
+    .main { margin-left: var(--sidebar-w); padding: 32px; min-height: 100vh; }
+
+    .top-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 32px;
+    }
+    .page-title { font-family: 'Cormorant Garamond', serif; font-size: 32px; font-weight: 400; }
+    .admin-badge { font-size: 11px; color: var(--gray); letter-spacing: 1px; }
+
+    /* STATS */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+    .stat-card {
+      background: var(--white);
+      padding: 24px;
+      border: 1px solid rgba(0,0,0,0.06);
+    }
+    .stat-label { font-size: 10px; letter-spacing: 2px; color: var(--gray); text-transform: uppercase; margin-bottom: 12px; }
+    .stat-value { font-family: 'Cormorant Garamond', serif; font-size: 36px; font-weight: 500; color: var(--black); }
+    .stat-sub { font-size: 11px; color: var(--gray); margin-top: 4px; }
+    .stat-card.gold { border-left: 3px solid var(--gold); }
+
+    /* SECTIONS */
+    .section-box {
+      background: var(--white);
+      border: 1px solid rgba(0,0,0,0.06);
+      margin-bottom: 24px;
+    }
+    .section-box-header {
+      padding: 20px 24px;
+      border-bottom: 1px solid rgba(0,0,0,0.06);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .section-box-header h3 { font-size: 14px; font-weight: 600; letter-spacing: 1px; }
+    .section-box-body { padding: 24px; }
+
+    /* TABLE */
+    table { width: 100%; border-collapse: collapse; }
+    th {
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--gray);
+      text-align: left;
+      padding: 10px 12px;
+      border-bottom: 1px solid rgba(0,0,0,0.08);
+      font-weight: 500;
+    }
+    td {
+      padding: 14px 12px;
+      font-size: 13px;
+      border-bottom: 1px solid rgba(0,0,0,0.04);
+      vertical-align: middle;
+    }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: rgba(201,168,76,0.03); }
+
+    .status-badge {
+      display: inline-block;
+      padding: 4px 12px;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+    .status-new { background: rgba(59,130,246,0.1); color: #2563eb; }
+    .status-processing { background: rgba(245,158,11,0.1); color: #d97706; }
+    .status-shipped { background: rgba(168,85,247,0.1); color: #7c3aed; }
+    .status-delivered { background: rgba(34,197,94,0.1); color: #16a34a; }
+    .status-cancelled { background: rgba(239,68,68,0.1); color: #dc2626; }
+
+    .action-btn {
+      padding: 6px 14px;
+      border: 1px solid rgba(0,0,0,0.15);
+      background: transparent;
+      font-size: 11px;
+      cursor: pointer;
+      font-family: 'Montserrat', sans-serif;
+      transition: all 0.2s;
+      margin-right: 4px;
+    }
+    .action-btn:hover { background: var(--black); color: var(--gold); border-color: var(--black); }
+    .action-btn.danger:hover { background: var(--red); color: white; border-color: var(--red); }
+
+    /* PRODUCT FORM */
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+    .form-group { margin-bottom: 16px; }
+    .form-group label { display: block; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--gray); margin-bottom: 6px; font-weight: 500; }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1px solid rgba(0,0,0,0.15);
+      background: var(--offwhite);
+      font-family: 'Montserrat', sans-serif;
+      font-size: 13px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .form-group input:focus, .form-group textarea:focus { border-color: var(--gold); }
+    .form-group textarea { height: 90px; resize: vertical; }
+
+    .save-btn {
+      padding: 12px 32px;
+      background: var(--gold);
+      color: var(--black);
+      border: none;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background 0.2s;
+      font-family: 'Montserrat', sans-serif;
+    }
+    .save-btn:hover { background: var(--gold-light); }
+
+    .empty-state {
+      text-align: center;
+      padding: 48px;
+      color: var(--gray);
+    }
+    .empty-state p { font-size: 14px; }
+
+    .tab-hidden { display: none; }
+
+    .whatsapp-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      background: #25d366;
+      color: white;
+      border: none;
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: 'Montserrat', sans-serif;
+      text-decoration: none;
+    }
+
+    @media (max-width: 768px) {
+      .sidebar { display: none; }
+      .main { margin-left: 0; padding: 20px; }
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+      .form-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- LOGIN SCREEN -->
+<div class="login-screen" id="loginScreen">
+  <div class="login-box">
+    <div class="login-logo">HA <span>LUEX</span></div>
+    <div class="login-sub">Admin Panel</div>
+    <input type="text" id="loginUser" placeholder="Username" />
+    <input type="password" id="loginPass" placeholder="Password" />
+    <button class="login-btn" onclick="doLogin()">Login</button>
+    <div class="login-err" id="loginErr">Incorrect username or password</div>
+    <p style="font-size:11px; color:#555; margin-top:20px;">Default: admin / haluex2026</p>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div class="dashboard" id="dashboard">
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="sidebar-logo">
+      <h1>HA <span>LUEX</span></h1>
+      <p>Admin Dashboard</p>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-item active" onclick="showTab('orders', this)">
+        <span class="icon">📋</span> Orders
+      </div>
+      <div class="nav-item" onclick="showTab('products', this)">
+        <span class="icon">👔</span> Products
+      </div>
+      <div class="nav-item" onclick="showTab('addProduct', this)">
+        <span class="icon">➕</span> Add Product
+      </div>
+      <div class="nav-item" onclick="showTab('settings', this)">
+        <span class="icon">⚙️</span> Settings
+      </div>
+      <div class="nav-item" onclick="window.open('index.html','_blank')">
+        <span class="icon">🌐</span> View Store
+      </div>
+    </nav>
+    <div class="sidebar-footer">
+      <button class="logout-btn" onclick="doLogout()">Logout</button>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <!-- TOP BAR -->
+    <div class="top-bar">
+      <div>
+        <div class="page-title" id="pageTitle">Orders</div>
+        <div class="admin-badge">HA Luex Admin Panel</div>
+      </div>
+      <div style="font-size:12px; color:var(--gray);" id="currentDate"></div>
+    </div>
+
+    <!-- STATS -->
+    <div class="stats-grid" id="statsGrid">
+      <div class="stat-card gold">
+        <div class="stat-label">Total Orders</div>
+        <div class="stat-value" id="statOrders">0</div>
+        <div class="stat-sub">All time</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">New Orders</div>
+        <div class="stat-value" id="statNew">0</div>
+        <div class="stat-sub">Pending action</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Revenue (PKR)</div>
+        <div class="stat-value" id="statRevenue">0</div>
+        <div class="stat-sub">Total earnings</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Products</div>
+        <div class="stat-value" id="statProducts">6</div>
+        <div class="stat-sub">In collection</div>
+      </div>
+    </div>
+
+    <!-- ORDERS TAB -->
+    <div id="tab-orders">
+      <div class="section-box">
+        <div class="section-box-header">
+          <h3>All Orders</h3>
+          <div style="display:flex; gap:8px;">
+            <button class="action-btn" onclick="clearOrders()">Clear All</button>
+          </div>
+        </div>
+        <div class="section-box-body" style="padding:0;">
+          <div id="ordersTableWrap"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PRODUCTS TAB -->
+    <div id="tab-products" class="tab-hidden">
+      <div class="section-box">
+        <div class="section-box-header">
+          <h3>Product Inventory</h3>
+          <button class="action-btn" onclick="showTab('addProduct', document.querySelector('.nav-item:nth-child(3)'))">+ Add New</button>
+        </div>
+        <div class="section-box-body" style="padding:0;">
+          <div id="productsTableWrap"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ADD PRODUCT TAB -->
+    <div id="tab-addProduct" class="tab-hidden">
+      <div class="section-box">
+        <div class="section-box-header">
+          <h3>Add New Product</h3>
+        </div>
+        <div class="section-box-body">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Product Name *</label>
+              <input type="text" id="pName" placeholder="e.g. Classic White Shirt" />
+            </div>
+            <div class="form-group">
+              <label>Category *</label>
+              <select id="pCategory">
+                <option>Formal</option>
+                <option>Casual</option>
+                <option>Premium</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Price (PKR) *</label>
+              <input type="number" id="pPrice" placeholder="e.g. 3500" />
+            </div>
+            <div class="form-group">
+              <label>Old Price (PKR) — for sale</label>
+              <input type="number" id="pOldPrice" placeholder="e.g. 4500 (optional)" />
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Emoji Icon</label>
+              <input type="text" id="pEmoji" placeholder="e.g. 👔" value="👔" />
+            </div>
+            <div class="form-group">
+              <label>Badge (optional)</label>
+              <input type="text" id="pBadge" placeholder="e.g. New, Sale, Best Seller" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Fabric</label>
+            <input type="text" id="pFabric" placeholder="e.g. 100% Egyptian Cotton" />
+          </div>
+          <div class="form-group">
+            <label>Description *</label>
+            <textarea id="pDesc" placeholder="Describe the shirt — fabric, fit, occasion..."></textarea>
+          </div>
+          <button class="save-btn" onclick="saveProduct()">Save Product</button>
+          <span style="font-size:11px; color:var(--gray); margin-left:12px;" id="saveMsg"></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- SETTINGS TAB -->
+    <div id="tab-settings" class="tab-hidden">
+      <div class="section-box">
+        <div class="section-box-header">
+          <h3>Store Settings</h3>
+        </div>
+        <div class="section-box-body">
+          <div class="form-group">
+            <label>WhatsApp Number (with country code)</label>
+            <input type="text" id="settWA" placeholder="923001234567" />
+          </div>
+          <div class="form-group">
+            <label>Store Email</label>
+            <input type="text" id="settEmail" placeholder="info@haluex.com" />
+          </div>
+          <div class="form-group">
+            <label>Announcement Bar Text</label>
+            <input type="text" id="settAnnouncement" placeholder="Free delivery on orders above PKR 5,000" />
+          </div>
+          <div class="form-group">
+            <label>Admin Password (change it!)</label>
+            <input type="password" id="settPass" placeholder="New password" />
+          </div>
+          <button class="save-btn" onclick="saveSettings()">Save Settings</button>
+          <span style="font-size:11px; color:var(--gray); margin-left:12px;" id="settMsg"></span>
+        </div>
+      </div>
+
+      <div class="section-box">
+        <div class="section-box-header"><h3>How to Deploy on GitHub Pages</h3></div>
+        <div class="section-box-body">
+          <ol style="font-size:13px; line-height:2.2; color:#555; padding-left:20px;">
+            <li>Download all website files (index.html, products.html, about.html, contact.html, admin.html, css/, js/)</li>
+            <li>Go to <strong>github.com</strong> and create a free account</li>
+            <li>Click "New Repository" → name it <strong>haluex</strong> (lowercase)</li>
+            <li>Upload all files to the repository</li>
+            <li>Go to Settings → Pages → Source: main branch → Save</li>
+            <li>Your site will be live at: <strong>yourusername.github.io/haluex</strong></li>
+            <li>Admin panel at: <strong>yourusername.github.io/haluex/admin.html</strong></li>
+          </ol>
+          <p style="font-size:12px; color:var(--gray); margin-top:16px;">⚠️ Note: GitHub Pages is free and your site will be live in 2–5 minutes after upload.</p>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+  // ---- AUTH ----
+  const ADMIN_USER = 'admin';
+  let adminPass = localStorage.getItem('haluex_pass') || 'haluex2026';
+
+  function doLogin() {
+    const u = document.getElementById('loginUser').value;
+    const p = document.getElementById('loginPass').value;
+    if (u === ADMIN_USER && p === adminPass) {
+      document.getElementById('loginScreen').style.display = 'none';
+      document.getElementById('dashboard').style.display = 'block';
+      initDashboard();
+    } else {
+      document.getElementById('loginErr').style.display = 'block';
+    }
+  }
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Enter') doLogin();
+  });
+
+  function doLogout() {
+    document.getElementById('loginScreen').style.display = 'flex';
+    document.getElementById('dashboard').style.display = 'none';
+    document.getElementById('loginUser').value = '';
+    document.getElementById('loginPass').value = '';
+  }
+
+  // ---- TABS ----
+  const tabs = ['orders','products','addProduct','settings'];
+
+  function showTab(name, el) {
+    tabs.forEach(t => document.getElementById('tab-' + t).classList.add('tab-hidden'));
+    document.getElementById('tab-' + name).classList.remove('tab-hidden');
+    document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+    if (el) el.classList.add('active');
+
+    const titles = { orders: 'Orders', products: 'Products', addProduct: 'Add Product', settings: 'Settings' };
+    document.getElementById('pageTitle').textContent = titles[name] || name;
+
+    if (name === 'products') renderProductsTable();
+    if (name === 'orders') renderOrdersTable();
+  }
+
+  // ---- INIT ----
+  function initDashboard() {
+    const now = new Date();
+    document.getElementById('currentDate').textContent = now.toLocaleDateString('en-PK', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
+    updateStats();
+    renderOrdersTable();
+  }
+
+  function updateStats() {
+    const orders = JSON.parse(localStorage.getItem('haluex_orders') || '[]');
+    const newOrds = orders.filter(o => o.status === 'New');
+    const revenue = orders.reduce((s, o) => s + (o.total || 0), 0);
+    document.getElementById('statOrders').textContent = orders.length;
+    document.getElementById('statNew').textContent = newOrds.length;
+    document.getElementById('statRevenue').textContent = revenue.toLocaleString();
+  }
+
+  // ---- ORDERS ----
+  function renderOrdersTable() {
+    const orders = JSON.parse(localStorage.getItem('haluex_orders') || '[]');
+    const wrap = document.getElementById('ordersTableWrap');
+    updateStats();
+
+    if (orders.length === 0) {
+      wrap.innerHTML = '<div class="empty-state"><p>No orders yet. Orders will appear here when customers place them.</p></div>';
+      return;
+    }
+
+    const rows = orders.slice().reverse().map(o => {
+      const statusClass = {
+        'New':'status-new','Processing':'status-processing','Shipped':'status-shipped',
+        'Delivered':'status-delivered','Cancelled':'status-cancelled'
+      }[o.status] || 'status-new';
+
+      const waMsg = encodeURIComponent(`Hi ${o.customer.name}, your HA Luex order ${o.id} update:`);
+      const waNum = localStorage.getItem('haluex_wa') || '923000000000';
+
+      return `<tr>
+        <td><strong>${o.id}</strong><br/><span style="font-size:11px;color:#888;">${o.date}</span></td>
+        <td>${o.customer.name}<br/><span style="font-size:11px;color:#888;">${o.customer.phone}</span></td>
+        <td style="font-size:12px;">${o.items.map(i=>`${i.name} (${i.size}) x${i.qty}`).join('<br/>')}</td>
+        <td><strong>PKR ${(o.total||0).toLocaleString()}</strong></td>
+        <td><span class="status-badge ${statusClass}">${o.status}</span></td>
+        <td>
+          <select onchange="updateOrderStatus('${o.id}', this.value)" style="padding:6px 10px; font-size:11px; border:1px solid #ddd; font-family:'Montserrat',sans-serif; margin-bottom:6px; width:130px;">
+            ${['New','Processing','Shipped','Delivered','Cancelled'].map(s=>`<option ${s===o.status?'selected':''}>${s}</option>`).join('')}
+          </select><br/>
+          <a class="whatsapp-btn" href="https://wa.me/${waNum}?text=${waMsg}" target="_blank">📱 WhatsApp</a>
+        </td>
+      </tr>`;
+    }).join('');
+
+    wrap.innerHTML = `<table>
+      <thead><tr>
+        <th>Order ID</th><th>Customer</th><th>Items</th><th>Total</th><th>Status</th><th>Actions</th>
+      </tr></thead>
+      <tbody>${rows}</tbody>
+    </table>`;
+  }
+
+  function updateOrderStatus(id, status) {
+    const orders = JSON.parse(localStorage.getItem('haluex_orders') || '[]');
+    const idx = orders.findIndex(o => o.id === id);
+    if (idx !== -1) {
+      orders[idx].status = status;
+      localStorage.setItem('haluex_orders', JSON.stringify(orders));
+      renderOrdersTable();
+    }
+  }
+
+  function clearOrders() {
+    if (confirm('Clear all orders? This cannot be undone.')) {
+      localStorage.removeItem('haluex_orders');
+      renderOrdersTable();
+      updateStats();
+    }
+  }
+
+  // ---- PRODUCTS ----
+  // Inline products data for admin
+  const builtinProducts = [
+    { id:1, name:"The Classic White", category:"Formal", price:3500, oldPrice:4500, emoji:"👔", badge:"Best Seller", fabric:"100% Egyptian Cotton", stock:true },
+    { id:2, name:"Obsidian Black", category:"Formal", price:4200, oldPrice:null, emoji:"🖤", badge:"New", fabric:"Premium Cotton Blend", stock:true },
+    { id:3, name:"Desert Linen", category:"Casual", price:3800, oldPrice:4800, emoji:"🌿", badge:"Sale", fabric:"Pure Linen", stock:true },
+    { id:4, name:"Royal Navy", category:"Formal", price:3600, oldPrice:null, emoji:"💙", badge:null, fabric:"100% Cotton", stock:true },
+    { id:5, name:"Weekend Casual", category:"Casual", price:2800, oldPrice:3500, emoji:"😎", badge:"Sale", fabric:"Soft Cotton", stock:true },
+    { id:6, name:"Gold Edition", category:"Premium", price:6500, oldPrice:8000, emoji:"✨", badge:"Limited", fabric:"Egyptian Cotton + Silk Blend", stock:true }
+  ];
+
+  function getProducts() {
+    const extra = JSON.parse(localStorage.getItem('haluex_extra_products') || '[]');
+    return [...builtinProducts, ...extra];
+  }
+
+  function renderProductsTable() {
+    const prods = getProducts();
+    const wrap = document.getElementById('productsTableWrap');
+    document.getElementById('statProducts').textContent = prods.length;
+
+    const rows = prods.map(p => `<tr>
+      <td style="font-size:24px;">${p.emoji}</td>
+      <td><strong>${p.name}</strong><br/><span style="font-size:11px;color:#888;">${p.fabric || ''}</span></td>
+      <td>${p.category}</td>
+      <td>PKR ${p.price.toLocaleString()}${p.oldPrice ? ` <span style="text-decoration:line-through;color:#aaa;font-size:11px;">PKR ${p.oldPrice.toLocaleString()}</span>` : ''}</td>
+      <td>${p.badge ? `<span class="status-badge status-new">${p.badge}</span>` : '—'}</td>
+      <td><span style="color:var(--green); font-size:12px;">● In Stock</span></td>
+    </tr>`).join('');
+
+    wrap.innerHTML = `<table>
+      <thead><tr><th></th><th>Product</th><th>Category</th><th>Price</th><th>Badge</th><th>Stock</th></tr></thead>
+      <tbody>${rows}</tbody>
+    </table>`;
+  }
+
+  function saveProduct() {
+    const name = document.getElementById('pName').value.trim();
+    const price = parseInt(document.getElementById('pPrice').value);
+    if (!name || !price) { alert('Name and price are required.'); return; }
+
+    const extra = JSON.parse(localStorage.getItem('haluex_extra_products') || '[]');
+    const newId = Date.now();
+    extra.push({
+      id: newId,
+      name,
+      category: document.getElementById('pCategory').value,
+      price,
+      oldPrice: parseInt(document.getElementById('pOldPrice').value) || null,
+      emoji: document.getElementById('pEmoji').value || '👔',
+      badge: document.getElementById('pBadge').value.trim() || null,
+      fabric: document.getElementById('pFabric').value.trim(),
+      description: document.getElementById('pDesc').value.trim(),
+      sizes: ['S','M','L','XL','XXL'],
+      stock: true
+    });
+    localStorage.setItem('haluex_extra_products', JSON.stringify(extra));
+
+    document.getElementById('pName').value = '';
+    document.getElementById('pPrice').value = '';
+    document.getElementById('pOldPrice').value = '';
+    document.getElementById('pBadge').value = '';
+    document.getElementById('pDesc').value = '';
+
+    const msg = document.getElementById('saveMsg');
+    msg.textContent = '✓ Product saved!';
+    msg.style.color = 'green';
+    setTimeout(() => msg.textContent = '', 3000);
+    document.getElementById('statProducts').textContent = getProducts().length;
+  }
+
+  // ---- SETTINGS ----
+  function saveSettings() {
+    const wa = document.getElementById('settWA').value.trim();
+    const pass = document.getElementById('settPass').value.trim();
+    if (wa) localStorage.setItem('haluex_wa', wa);
+    if (pass) { adminPass = pass; localStorage.setItem('haluex_pass', pass); }
+    const msg = document.getElementById('settMsg');
+    msg.textContent = '✓ Settings saved!';
+    msg.style.color = 'green';
+    setTimeout(() => msg.textContent = '', 3000);
+  }
+</script>
+</body>
+</html>

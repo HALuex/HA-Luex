@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About — HA Luex</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<div class="announcement-bar">
+  <span>Free delivery on orders above PKR 5,000 &nbsp;|&nbsp; Cash on Delivery Available</span>
+</div>
+
+<nav class="navbar">
+  <div class="nav-logo">HA <span>LUEX</span></div>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="products.html">Collection</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+  <div class="nav-actions">
+    <button class="cart-btn" onclick="toggleCart()">
+      <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+      <span class="cart-count" id="cartCount">0</span>
+    </button>
+    <button class="hamburger" onclick="toggleMenu()">&#9776;</button>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="index.html">Home</a>
+  <a href="products.html">Collection</a>
+  <a href="about.html">About</a>
+  <a href="contact.html">Contact</a>
+</div>
+
+<div class="page-hero">
+  <h1>Our <em>Story</em></h1>
+  <p>Born in Karachi. Built for Pakistan.</p>
+</div>
+
+<section class="section">
+  <div style="max-width: 800px; margin: 0 auto; text-align: center;">
+    <p class="section-tag">Who We Are</p>
+    <h2 class="section-title" style="margin-bottom: 32px;">HA Luex — <em style="font-style:italic; color: var(--gold-dark);">Hanzala Akbar Luxury</em></h2>
+    <p style="font-size: 15px; line-height: 2; color: #555; margin-bottom: 24px;">
+      HA Luex was founded by Hanzala Akbar with one simple mission — to bring genuine luxury menswear to Pakistani men at fair prices. We believe that every Pakistani man deserves to wear something exceptional, not just something affordable.
+    </p>
+    <p style="font-size: 15px; line-height: 2; color: #555; margin-bottom: 24px;">
+      Our shirts are crafted from premium fabrics, cut with precision, and finished with the kind of attention to detail you'd expect from international luxury brands — but at prices that make sense for our market.
+    </p>
+    <p style="font-size: 15px; line-height: 2; color: #555;">
+      From Karachi to the rest of Pakistan, we deliver quality that speaks for itself. Because when you wear HA Luex, you don't just wear a shirt — you wear a statement.
+    </p>
+  </div>
+</section>
+
+<div style="background: var(--black); padding: 80px 48px;">
+  <div style="display: grid; grid-template-columns: repeat(3,1fr); gap: 1px; max-width: 900px; margin: 0 auto; background: rgba(201,168,76,0.2);">
+    <div style="background: var(--black); padding: 48px 32px; text-align: center;">
+      <div style="font-family: var(--font-display); font-size: 56px; color: var(--gold); font-weight: 600; line-height:1;">100%</div>
+      <div style="font-size: 11px; letter-spacing: 2px; color: #888; text-transform: uppercase; margin-top: 12px;">Premium Fabric</div>
+    </div>
+    <div style="background: var(--black); padding: 48px 32px; text-align: center;">
+      <div style="font-family: var(--font-display); font-size: 56px; color: var(--gold); font-weight: 600; line-height:1;">7</div>
+      <div style="font-size: 11px; letter-spacing: 2px; color: #888; text-transform: uppercase; margin-top: 12px;">Day Returns</div>
+    </div>
+    <div style="background: var(--black); padding: 48px 32px; text-align: center;">
+      <div style="font-family: var(--font-display); font-size: 56px; color: var(--gold); font-weight: 600; line-height:1;">COD</div>
+      <div style="font-size: 11px; letter-spacing: 2px; color: #888; text-transform: uppercase; margin-top: 12px;">Cash on Delivery</div>
+    </div>
+  </div>
+</div>
+
+<section class="section" style="background: var(--offwhite-dark);">
+  <div style="max-width: 700px; margin: 0 auto; text-align: center;">
+    <p class="section-tag">Our Values</p>
+    <h2 class="section-title" style="margin-bottom: 48px;">What We Stand For</h2>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; text-align: left;">
+      <div style="background: white; padding: 28px;">
+        <div style="font-size: 24px; margin-bottom: 12px; color: var(--gold);">✦</div>
+        <h4 style="font-family: var(--font-display); font-size: 20px; margin-bottom: 10px;">Quality First</h4>
+        <p style="font-size: 13px; color: #666; line-height: 1.7;">We never compromise on fabric quality. Every shirt is tested before it reaches you.</p>
+      </div>
+      <div style="background: white; padding: 28px;">
+        <div style="font-size: 24px; margin-bottom: 12px; color: var(--gold);">✦</div>
+        <h4 style="font-family: var(--font-display); font-size: 20px; margin-bottom: 10px;">Fair Pricing</h4>
+        <p style="font-size: 13px; color: #666; line-height: 1.7;">Luxury shouldn't mean unaffordable. Our prices reflect real value, not just a label.</p>
+      </div>
+      <div style="background: white; padding: 28px;">
+        <div style="font-size: 24px; margin-bottom: 12px; color: var(--gold);">✦</div>
+        <h4 style="font-family: var(--font-display); font-size: 20px; margin-bottom: 10px;">Customer First</h4>
+        <p style="font-size: 13px; color: #666; line-height: 1.7;">Not happy? Return it. We stand behind every product we sell.</p>
+      </div>
+      <div style="background: white; padding: 28px;">
+        <div style="font-size: 24px; margin-bottom: 12px; color: var(--gold);">✦</div>
+        <h4 style="font-family: var(--font-display); font-size: 20px; margin-bottom: 10px;">Made for Pakistan</h4>
+        <p style="font-size: 13px; color: #666; line-height: 1.7;">Designed keeping Pakistani climate, physique and taste in mind.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
+<div class="cart-sidebar" id="cartSidebar">
+  <div class="cart-header">
+    <h3>Your Cart</h3>
+    <button onclick="toggleCart()" class="cart-close">✕</button>
+  </div>
+  <div class="cart-items" id="cartItems">
+    <p class="cart-empty">Your cart is empty</p>
+  </div>
+  <div class="cart-footer" id="cartFooter" style="display:none;">
+    <div class="cart-total">Total: <span id="cartTotal">PKR 0</span></div>
+    <button class="btn-gold" style="width:100%;" onclick="checkout()">Checkout via WhatsApp</button>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="footer-top">
+    <div class="footer-brand">
+      <div class="footer-logo">HA <span>LUEX</span></div>
+      <p>Premium men's shirts. Karachi, Pakistan.</p>
+      <div class="footer-social">
+        <a href="#">Instagram</a>
+        <a href="#">Facebook</a>
+        <a href="https://wa.me/923000000000">WhatsApp</a>
+      </div>
+    </div>
+    <div class="footer-links">
+      <h4>Quick Links</h4>
+      <a href="index.html">Home</a>
+      <a href="products.html">Collection</a>
+      <a href="about.html">About Us</a>
+      <a href="contact.html">Contact</a>
+    </div>
+    <div class="footer-links">
+      <h4>Contact</h4>
+      <a href="https://wa.me/923000000000">WhatsApp Us</a>
+      <a href="mailto:info@haluex.com">info@haluex.com</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2026 HA Luex. All rights reserved.</p>
+  </div>
+</footer>
+
+<script src="js/products.js"></script>
+<script src="js/cart.js"></script>
+<script>
+  function toggleMenu() { document.getElementById('mobileMenu').classList.toggle('open'); }
+  function checkout() { window.location.href = 'products.html'; }
+</script>
+</body>
+</html>

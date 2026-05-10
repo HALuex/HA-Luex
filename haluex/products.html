@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Collection — HA Luex</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<div class="announcement-bar">
+  <span>Free delivery on orders above PKR 5,000 &nbsp;|&nbsp; Cash on Delivery Available &nbsp;|&nbsp; WhatsApp: 0300-0000000</span>
+</div>
+
+<nav class="navbar">
+  <div class="nav-logo">HA <span>LUEX</span></div>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="products.html">Collection</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+  <div class="nav-actions">
+    <button class="cart-btn" onclick="toggleCart()">
+      <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+      <span class="cart-count" id="cartCount">0</span>
+    </button>
+    <button class="hamburger" onclick="toggleMenu()">&#9776;</button>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="index.html">Home</a>
+  <a href="products.html">Collection</a>
+  <a href="about.html">About</a>
+  <a href="contact.html">Contact</a>
+</div>
+
+<div class="page-hero">
+  <h1>Our <em>Collection</em></h1>
+  <p>Premium men's shirts — crafted for excellence</p>
+</div>
+
+<div class="filter-bar">
+  <span class="filter-label">Filter:</span>
+  <button class="filter-btn active" onclick="filterProducts('All', this)">All</button>
+  <button class="filter-btn" onclick="filterProducts('Formal', this)">Formal</button>
+  <button class="filter-btn" onclick="filterProducts('Casual', this)">Casual</button>
+  <button class="filter-btn" onclick="filterProducts('Premium', this)">Premium</button>
+</div>
+
+<section class="section" style="padding-top: 40px;">
+  <div class="products-grid" id="productsGrid"></div>
+</section>
+
+<!-- SIZE SELECTION MODAL -->
+<div class="modal-overlay" id="sizeModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="modalProductName">Select Size</h3>
+      <button class="modal-close" onclick="closeSizeModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <p style="font-size:13px; color:#888; margin-bottom:20px;">Choose your size before adding to cart</p>
+      <div class="size-row" id="sizeButtons"></div>
+      <p style="font-size:11px; color:#888; margin-bottom: 24px;">Size Guide: S=36, M=38, L=40, XL=42, XXL=44</p>
+      <button class="btn-gold" style="width:100%;" onclick="confirmAddToCart()">Add to Cart</button>
+    </div>
+  </div>
+</div>
+
+<!-- CHECKOUT MODAL -->
+<div class="modal-overlay" id="checkoutModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>Place Your Order</h3>
+      <button class="modal-close" onclick="document.getElementById('checkoutModal').classList.remove('open')">✕</button>
+    </div>
+    <div class="modal-body">
+      <p style="font-size:12px; color:#888; margin-bottom:24px; letter-spacing:1px;">CASH ON DELIVERY — Fill in your details</p>
+      <div class="form-group">
+        <label>Full Name *</label>
+        <input type="text" id="orderName" placeholder="e.g. Ahmed Khan" />
+      </div>
+      <div class="form-group">
+        <label>Phone Number *</label>
+        <input type="tel" id="orderPhone" placeholder="e.g. 0300-1234567" />
+      </div>
+      <div class="form-group">
+        <label>Complete Address *</label>
+        <input type="text" id="orderAddress" placeholder="House no., Street, Area" />
+      </div>
+      <div class="form-group">
+        <label>City *</label>
+        <input type="text" id="orderCity" placeholder="e.g. Karachi" />
+      </div>
+      <button class="btn-gold" style="width:100%;" onclick="submitOrder()">Confirm Order via WhatsApp</button>
+      <p style="font-size:11px; text-align:center; margin-top:12px; color:#888;">You'll be redirected to WhatsApp to confirm your order</p>
+    </div>
+  </div>
+</div>
+
+<!-- CART SIDEBAR -->
+<div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
+<div class="cart-sidebar" id="cartSidebar">
+  <div class="cart-header">
+    <h3>Your Cart</h3>
+    <button onclick="toggleCart()" class="cart-close">✕</button>
+  </div>
+  <div class="cart-items" id="cartItems">
+    <p class="cart-empty">Your cart is empty</p>
+  </div>
+  <div class="cart-footer" id="cartFooter" style="display:none;">
+    <div class="cart-total">Total: <span id="cartTotal">PKR 0</span></div>
+    <button class="btn-gold" style="width:100%;" onclick="checkout()">Checkout via WhatsApp</button>
+    <p style="font-size:11px; text-align:center; margin-top:8px; color:#888;">Cash on Delivery available</p>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="footer-top">
+    <div class="footer-brand">
+      <div class="footer-logo">HA <span>LUEX</span></div>
+      <p>Premium men's shirts for the modern Pakistani gentleman.</p>
+      <div class="footer-social">
+        <a href="#">Instagram</a>
+        <a href="#">Facebook</a>
+        <a href="https://wa.me/923000000000">WhatsApp</a>
+      </div>
+    </div>
+    <div class="footer-links">
+      <h4>Quick Links</h4>
+      <a href="index.html">Home</a>
+      <a href="products.html">Collection</a>
+      <a href="about.html">About Us</a>
+      <a href="contact.html">Contact</a>
+    </div>
+    <div class="footer-links">
+      <h4>Help</h4>
+      <a href="#">Size Guide</a>
+      <a href="#">Return Policy</a>
+      <a href="#">Shipping Info</a>
+    </div>
+    <div class="footer-links">
+      <h4>Contact</h4>
+      <a href="https://wa.me/923000000000">WhatsApp Us</a>
+      <a href="mailto:info@haluex.com">info@haluex.com</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2026 HA Luex. All rights reserved.</p>
+  </div>
+</footer>
+
+<script src="js/products.js"></script>
+<script src="js/cart.js"></script>
+<script>
+  let selectedProductId = null;
+  let selectedSize = null;
+
+  function renderProducts(category = 'All') {
+    const grid = document.getElementById('productsGrid');
+    const filtered = category === 'All' ? products : products.filter(p => p.category === category);
+    grid.innerHTML = filtered.map(p => createProductCard(p)).join('');
+  }
+
+  function filterProducts(category, btn) {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderProducts(category);
+  }
+
+  function openProduct(id) {
+    const p = products.find(x => x.id === id);
+    if (!p) return;
+    selectedProductId = id;
+    selectedSize = null;
+    document.getElementById('modalProductName').textContent = p.name;
+    const sizeBtns = document.getElementById('sizeButtons');
+    sizeBtns.innerHTML = p.sizes.map(s => 
+      `<button class="size-btn" onclick="selectSize('${s}', this)">${s}</button>`
+    ).join('');
+    document.getElementById('sizeModal').classList.add('open');
+  }
+
+  function selectSize(size, btn) {
+    document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+    selectedSize = size;
+  }
+
+  function closeSizeModal() {
+    document.getElementById('sizeModal').classList.remove('open');
+    selectedProductId = null;
+    selectedSize = null;
+  }
+
+  function confirmAddToCart() {
+    if (!selectedSize) { alert('Please select a size.'); return; }
+    addToCart(selectedProductId, selectedSize);
+    closeSizeModal();
+  }
+
+  function toggleMenu() {
+    document.getElementById('mobileMenu').classList.toggle('open');
+  }
+
+  document.addEventListener('DOMContentLoaded', () => renderProducts());
+</script>
+</body>
+</html>

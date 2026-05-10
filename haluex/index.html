@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HA Luex — Premium Men's Shirts</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<!-- ANNOUNCEMENT BAR -->
+<div class="announcement-bar">
+  <span>Free delivery on orders above PKR 5,000 &nbsp;|&nbsp; Cash on Delivery Available &nbsp;|&nbsp; WhatsApp: 0300-0000000</span>
+</div>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <div class="nav-logo">HA <span>LUEX</span></div>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="products.html">Collection</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+  <div class="nav-actions">
+    <button class="cart-btn" onclick="toggleCart()">
+      <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+      <span class="cart-count" id="cartCount">0</span>
+    </button>
+    <button class="hamburger" onclick="toggleMenu()">&#9776;</button>
+  </div>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="index.html">Home</a>
+  <a href="products.html">Collection</a>
+  <a href="about.html">About</a>
+  <a href="contact.html">Contact</a>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <p class="hero-sub">New Collection 2026</p>
+    <h1 class="hero-title">Dressed for<br/><em>Excellence</em></h1>
+    <p class="hero-desc">Premium men's shirts crafted for the modern Pakistani gentleman. Quality that speaks before you do.</p>
+    <div class="hero-btns">
+      <a href="products.html" class="btn-gold">Shop Collection</a>
+      <a href="about.html" class="btn-outline">Our Story</a>
+    </div>
+  </div>
+  <div class="hero-badge">
+    <div class="badge-circle">
+      <span>HA</span>
+      <span class="badge-sub">LUEX</span>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features">
+  <div class="feature">
+    <div class="feature-icon">✦</div>
+    <h3>Premium Fabric</h3>
+    <p>Finest cotton and linen sourced for comfort and durability</p>
+  </div>
+  <div class="feature">
+    <div class="feature-icon">✦</div>
+    <h3>Tailored Fit</h3>
+    <p>Every shirt designed to complement the Pakistani physique</p>
+  </div>
+  <div class="feature">
+    <div class="feature-icon">✦</div>
+    <h3>Cash on Delivery</h3>
+    <p>Order with confidence — pay when it arrives at your door</p>
+  </div>
+  <div class="feature">
+    <div class="feature-icon">✦</div>
+    <h3>Easy Returns</h3>
+    <p>7-day hassle-free return policy on all orders</p>
+  </div>
+</section>
+
+<!-- FEATURED PRODUCTS -->
+<section class="section">
+  <div class="section-header">
+    <p class="section-tag">Curated for You</p>
+    <h2 class="section-title">Featured Collection</h2>
+  </div>
+  <div class="products-grid" id="featuredProducts"></div>
+  <div style="text-align:center; margin-top: 48px;">
+    <a href="products.html" class="btn-gold">View All Shirts</a>
+  </div>
+</section>
+
+<!-- ABOUT STRIP -->
+<section class="about-strip">
+  <div class="about-strip-text">
+    <p class="section-tag">Our Philosophy</p>
+    <h2>Where Luxury Meets<br/><em>Pakistani Heritage</em></h2>
+    <p>HA Luex was born from a simple belief — every man deserves to wear something exceptional. We create shirts that carry the soul of Pakistan with the refinement of luxury fashion.</p>
+    <a href="about.html" class="btn-gold" style="margin-top:24px; display:inline-block;">Read Our Story</a>
+  </div>
+  <div class="about-strip-visual">
+    <div class="about-monogram">H<span>A</span></div>
+    <p class="about-tagline">Est. 2026 · Karachi</p>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="section" style="background:#0a0a0a;">
+  <div class="section-header">
+    <p class="section-tag">What People Say</p>
+    <h2 class="section-title" style="color:#f5f0e8;">Customer Reviews</h2>
+  </div>
+  <div class="testimonials-grid">
+    <div class="testimonial">
+      <div class="stars">★★★★★</div>
+      <p>"Quality is unmatched. The fabric feels premium and the fit is perfect. Highly recommend!"</p>
+      <span>— Ahmed K., Karachi</span>
+    </div>
+    <div class="testimonial">
+      <div class="stars">★★★★★</div>
+      <p>"Ordered for Eid and received in 2 days. Packaging was beautiful, shirt looked amazing."</p>
+      <span>— Bilal S., Lahore</span>
+    </div>
+    <div class="testimonial">
+      <div class="stars">★★★★★</div>
+      <p>"Finally a Pakistani brand that delivers real luxury. Will definitely order again!"</p>
+      <span>— Usman R., Islamabad</span>
+    </div>
+  </div>
+</section>
+
+<!-- CART SIDEBAR -->
+<div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
+<div class="cart-sidebar" id="cartSidebar">
+  <div class="cart-header">
+    <h3>Your Cart</h3>
+    <button onclick="toggleCart()" class="cart-close">✕</button>
+  </div>
+  <div class="cart-items" id="cartItems">
+    <p class="cart-empty">Your cart is empty</p>
+  </div>
+  <div class="cart-footer" id="cartFooter" style="display:none;">
+    <div class="cart-total">Total: <span id="cartTotal">PKR 0</span></div>
+    <button class="btn-gold" style="width:100%;" onclick="checkout()">Checkout via WhatsApp</button>
+    <p style="font-size:11px; text-align:center; margin-top:8px; color:#888;">Cash on Delivery available</p>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-top">
+    <div class="footer-brand">
+      <div class="footer-logo">HA <span>LUEX</span></div>
+      <p>Premium men's shirts for the modern Pakistani gentleman. Quality crafted, luxury priced right.</p>
+      <div class="footer-social">
+        <a href="#">Instagram</a>
+        <a href="#">Facebook</a>
+        <a href="#">TikTok</a>
+        <a href="https://wa.me/923000000000">WhatsApp</a>
+      </div>
+    </div>
+    <div class="footer-links">
+      <h4>Quick Links</h4>
+      <a href="index.html">Home</a>
+      <a href="products.html">Collection</a>
+      <a href="about.html">About Us</a>
+      <a href="contact.html">Contact</a>
+    </div>
+    <div class="footer-links">
+      <h4>Help</h4>
+      <a href="#">Size Guide</a>
+      <a href="#">Return Policy</a>
+      <a href="#">Shipping Info</a>
+      <a href="#">Track Order</a>
+    </div>
+    <div class="footer-links">
+      <h4>Contact</h4>
+      <a href="https://wa.me/923000000000">WhatsApp Us</a>
+      <a href="mailto:info@haluex.com">info@haluex.com</a>
+      <a href="#">Karachi, Pakistan</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2026 HA Luex. All rights reserved. | Karachi, Pakistan</p>
+    <p>Made with passion for Pakistani men's fashion</p>
+  </div>
+</footer>
+
+<script src="js/products.js"></script>
+<script src="js/cart.js"></script>
+<script>
+  // Load featured products (first 3)
+  document.addEventListener('DOMContentLoaded', () => {
+    const grid = document.getElementById('featuredProducts');
+    const featured = products.slice(0, 3);
+    featured.forEach(p => {
+      grid.innerHTML += createProductCard(p);
+    });
+  });
+
+  function toggleMenu() {
+    document.getElementById('mobileMenu').classList.toggle('open');
+  }
+</script>
+</body>
+</html>

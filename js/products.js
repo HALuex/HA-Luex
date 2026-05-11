@@ -2,38 +2,38 @@
 // Admin is iss file mein products add/edit kar sakta hai
 
 const products = [
-  {
-    id: 1,
-    name: "Blue Striped Oxford Shirt",
-    price: 4500,
-    category: "Formal",
-    image: "Blue Striped Oxford Shirt.jpeg", 
-    description: "High-quality blue striped shirt with a sharp fashion sense."
-  },
-  {
-    id: 2,
-    name: "Navy Textured Polo",
-    price: 5200,
-    category: "Casual",
-    image: "Navy Cable-Knit Polo.jpg", 
-    description: "Premium navy blue textured knit polo for a sophisticated look."
-  },
-  {
-    id: 3,
-    name: "Black Cuban Collar Shirt",
-    price: 3800,
-    category: "Casual",
-    image: "Black Cuban Collar Shirt.jpg", 
-    description: "Modern black resort collar shirt, perfect for a relaxed vibe."
-  },
-  {
-    id: 4,
-    name: "Classic White Polo Shirt",
-    price: 4800,
-    category: "Casual",
-    image: "Classic White Polo Shirt.jpg", 
-    description: "Iconic white polo shirt, a timeless essential for any wardrobe."
-  }
+    {
+        id: 1,
+        name: "Blue Striped Oxford Shirt",
+        price: 4500,
+        category: "Formal",
+        image: "imges.io/Blue Striped Oxford Shirt.jpeg",
+        description: "High-quality blue striped shirt with a sharp fashion sense."
+    },
+    {
+        id: 2,
+        name: "Navy Textured Polo",
+        price: 5200,
+        category: "Casual",
+        image: "imges.io/Navy Textured Polo.jpg",
+        description: "Premium navy blue textured knit polo for a sophisticated look."
+    },
+    {
+        id: 3,
+        name: "Black Cuban Collar Shirt",
+        price: 3800,
+        category: "Casual",
+        image: "imges.io/Black Cuban Collar Shirt.jpg",
+        description: "Modern black resort collar shirt, perfect for a relaxed vibe."
+    },
+    {
+        id: 4,
+        name: "Classic White Polo Shirt",
+        price: 4800,
+        category: "Casual",
+        image: "imges.io/White Classic Polo Shirt.jpg",
+        description: "Iconic white polo shirt, a timeless essential for any wardrobe."
+    }
 ];
 
 // Product card HTML generator
